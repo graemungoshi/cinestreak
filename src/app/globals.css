@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: dark; }
+body { background: #09090b; color: #f4f4f5; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
