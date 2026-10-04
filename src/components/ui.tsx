@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { SITE } from "@/lib/site";
-import type { SeriesSummary } from "@/lib/types";
+import type { MovieSummary, SeriesSummary } from "@/lib/types";
 
 export function Poster({ url, title, ratio = "aspect-[2/3]" }: { url?: string; title: string; ratio?: string }) {
   if (url) {
@@ -81,5 +81,56 @@ export function ResultRow({ href, title, sub }: { href: string; title: string; s
         {sub && <div className="text-sm text-zinc-400">{sub}</div>}
       </Link>
     </li>
+  );
+}
+
+export function Rail({ title, href, children }: { title: string; href?: string; children: React.ReactNode }) {
+  return (
+    <section className="mt-10">
+      <div className="mb-3 flex items-baseline justify-between">
+        <h2 className="text-xl font-bold">{title}</h2>
+        {href && <Link href={href} className="text-sm font-semibold text-accent hover:underline">See all</Link>}
+      </div>
+      <div className="flex snap-x gap-4 overflow-x-auto pb-2">{children}</div>
+    </section>
+  );
+}
+
+export function RailItem({ children }: { children: React.ReactNode }) {
+  return <div className="w-[150px] shrink-0 snap-start sm:w-[170px]">{children}</div>;
+}
+
+export function GenreChips({ base, items, active, allLabel }: { base: string; items: { label: string; value: string; count?: number }[]; active?: string; allLabel?: string }) {
+  const chip = (on: boolean) =>
+    `whitespace-nowrap rounded-full border px-4 py-1.5 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${on ? "border-accent bg-accent text-zinc-950 shadow-[0_0_14px_rgba(123,140,255,.45)]" : "border-white/15 hover:border-white/40"}`;
+  return (
+    <div className="flex gap-2 overflow-x-auto pb-2" aria-label="Genres">
+      {allLabel && <Link href={base} className={chip(!active)}>{allLabel}</Link>}
+      {items.map((g) => (
+        <Link key={g.value} href={`${base}?genre=${encodeURIComponent(g.value)}`} className={chip(active === g.value)} aria-current={active === g.value ? "true" : undefined}>
+          {g.label}{g.count != null ? ` (${g.count})` : ""}
+        </Link>
+      ))}
+    </div>
+  );
+}
+
+export function FilmCard({ m }: { m: MovieSummary }) {
+  const hue = Number(m.id.replace(/\D/g, "")) % 360;
+  return (
+    <Link href={`/movie/${m.slug}`} className="group block rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+      {m.posterUrl ? (
+        <Poster url={m.posterUrl} title={m.title} />
+      ) : (
+        <div
+          className="flex aspect-[2/3] w-full items-end rounded-lg p-3 text-sm font-bold"
+          style={{ background: `linear-gradient(160deg,hsl(${hue} 45% 22%),hsl(${(hue + 50) % 360} 55% 35%))` }}
+        >
+          {m.title}
+        </div>
+      )}
+      <div className="mt-2 text-sm font-semibold leading-tight group-hover:text-accent">{m.title}</div>
+      {m.year && <div className="text-xs text-zinc-400">{m.year}</div>}
+    </Link>
   );
 }

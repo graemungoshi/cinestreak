@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
+import { Nav } from "@/components/Nav";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
@@ -22,7 +23,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-GB">
-      <body className="min-h-screen font-sans antialiased">
+      <body className="min-h-screen pb-16 font-sans antialiased sm:pb-0">
         <header className="sticky top-0 z-20 border-b border-white/10 bg-zinc-950/90 backdrop-blur">
           <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
             <Link href="/" className="text-xl font-black tracking-tight">
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </form>
           </div>
         </header>
+        <div className="sm:border-b sm:border-white/10"><Nav /></div>
         <main className="mx-auto max-w-6xl px-4 py-6">{children}</main>
         <footer className="mx-auto max-w-6xl px-4 py-10 text-xs text-zinc-500">
           TV data from{" "}

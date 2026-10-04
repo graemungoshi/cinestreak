@@ -7,6 +7,7 @@ export type SeriesSummary = {
   rating?: number;
   network?: string;
   genres: string[];
+  overview?: string;
 };
 
 export type TVSeries = SeriesSummary & {
@@ -38,7 +39,7 @@ export type Episode = {
 
 export type Credit = { id: string; name: string; slug: string };
 
-export type MovieSummary = { id: string; slug: string; title: string; year?: number; description?: string };
+export type MovieSummary = { id: string; slug: string; title: string; year?: number; description?: string; posterUrl?: string };
 
 export type Movie = MovieSummary & {
   overview: string;

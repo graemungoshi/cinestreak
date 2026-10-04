@@ -67,6 +67,7 @@ function toSummary(s: RawShow): SeriesSummary {
     rating: s.rating?.average ?? undefined,
     network: s.network?.name ?? s.webChannel?.name ?? undefined,
     genres: s.genres ?? [],
+    overview: stripHtml(s.summary) || undefined,
   };
 }
 
@@ -142,5 +143,25 @@ export const tvmaze: TVProvider = {
       .sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0))
       .slice(0, 18)
       .map(toSummary);
+  },
+
+  async getAiringRecent(country, days) {
+    const dates = Array.from({ length: days }, (_, i) => new Date(Date.now() + i * 86400000).toISOString().slice(0, 10));
+    type Item = { show?: RawShow; _embedded?: { show?: RawShow } };
+    const calls = dates.flatMap((d) => [
+      get<Item[]>(`/schedule?country=${encodeURIComponent(country)}&date=${d}`, 3600),
+      get<Item[]>(`/schedule/web?date=${d}&country=${encodeURIComponent(country)}`, 3600),
+    ]);
+    const settled = await Promise.allSettled(calls);
+    if (settled.every((r) => r.status === "rejected")) throw new Error("TVMaze schedule unavailable");
+    const byId = new Map<number, RawShow>();
+    for (const r of settled) {
+      if (r.status !== "fulfilled") continue;
+      for (const it of r.value) {
+        const show = it.show ?? it._embedded?.show;
+        if (show && show.image && !byId.has(show.id)) byId.set(show.id, show);
+      }
+    }
+    return [...byId.values()].sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0)).slice(0, 120).map(toSummary);
   },
 };

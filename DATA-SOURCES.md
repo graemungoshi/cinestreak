@@ -26,6 +26,12 @@ Rule: a source is only used in production if its terms permit it. "Free" does no
 - **Provides:** free-licence images linked from Wikidata (P18). Hotlinked, not copied. Each image links to its Commons file page, which states its licence and author.
 - **Caveat:** most modern film posters are not on Commons, so many films show a placeholder.
 
+## News (RSS headlines from film and TV outlets)
+- **Outlets:** configured in `src/lib/news.ts` (Variety, Deadline, The Hollywood Reporter, IndieWire, /Film). Verify each feed URL still works.
+- **What we show:** headline, outlet name, relative time and a link to the original story. No article text or images.
+- **Terms:** each outlet has its own terms for syndication and commercial use. Review them before you add ads or affiliate links, and remove any outlet that objects.
+- **X (Twitter):** not used. Its API is paid.
+
 ## Planned
 - **Streaming availability:** no source selected. UI shows "not available yet". Needs a licensed provider.
 - **Ratings/posters for movies:** no commercial-safe free source identified. TMDB is non-commercial on its free tier.

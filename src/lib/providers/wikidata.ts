@@ -22,10 +22,10 @@ type SparqlResult = { results?: { bindings?: Record<string, { value: string }>[]
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-async function getJson<T>(url: string, ttlSec: number, accept = "application/json"): Promise<T> {
+async function getJson<T>(url: string, ttlSec: number, accept = "application/json", timeoutMs = 15000): Promise<T> {
   return cached<T>(`wd:${url}`, ttlSec, async () => {
     for (let attempt = 0; attempt < 3; attempt++) {
-      const res = await fetch(url, { headers: { accept, "user-agent": UA, "api-user-agent": UA } });
+      const res = await fetch(url, { headers: { accept, "user-agent": UA, "api-user-agent": UA }, signal: AbortSignal.timeout(timeoutMs) });
       if (res.status === 429 || res.status >= 500) {
         await sleep(700 * (attempt + 1));
         continue;
@@ -233,6 +233,24 @@ export const wikidata: MovieProvider & PersonProvider = {
       sourceName: "Wikidata",
       sourceUrl: `https://www.wikidata.org/wiki/${id}`,
     };
+  },
+
+  async browseByGenre(genreLabel) {
+    if (!/^[a-z ]{3,40}$/.test(genreLabel)) return [];
+    const q = `SELECT ?film ?filmLabel (MIN(?d) AS ?date) (SAMPLE(?img) AS ?image) ?sl WHERE { ?g rdfs:label "${genreLabel}"@en . ?film wdt:P136 ?g ; wdt:P31 wd:Q11424 ; wikibase:sitelinks ?sl . OPTIONAL { ?film wdt:P577 ?d } OPTIONAL { ?film wdt:P18 ?img } SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } } GROUP BY ?film ?filmLabel ?sl ORDER BY DESC(?sl) LIMIT 48`;
+    const r = await getJson<SparqlResult>(`${SPARQL}?format=json&query=${encodeURIComponent(q)}`, 86400, "application/sparql-results+json", 25000);
+    const seen = new Set<string>();
+    const out: MovieSummary[] = [];
+    for (const b of r.results?.bindings ?? []) {
+      const fid = b.film?.value.split("/").pop();
+      const title = b.filmLabel?.value;
+      if (!fid || !/^Q\d+$/.test(fid) || !title || /^Q\d+$/.test(title) || seen.has(fid)) continue;
+      seen.add(fid);
+      const year = b.date ? Number(b.date.value.slice(0, 4)) || undefined : undefined;
+      const img = b.image?.value ? `${b.image.value.replace(/^http:/, "https:")}?width=300` : undefined;
+      out.push({ id: fid, slug: makeSlug(title, year, fid), title, year, posterUrl: img });
+    }
+    return out;
   },
 
   async getFilmography(id) {
