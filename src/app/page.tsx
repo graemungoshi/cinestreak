@@ -4,6 +4,7 @@ import { tryOr } from "@/lib/util";
 import { SeriesCard } from "@/components/ui";
 import type { SeriesSummary } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
 export default async function Home() {
   const airing = await tryOr(() => tvCall((p) => p.getAiringToday("GB")), [] as SeriesSummary[]);
   return (
