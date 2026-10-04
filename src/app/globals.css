@@ -5,3 +5,6 @@
 :root { color-scheme: dark; }
 body { background: #09090b; color: #f4f4f5; }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+.glow-text { text-shadow: 0 0 8px rgba(123,140,255,.6), 0 0 24px rgba(123,140,255,.4); }
+::selection { background: #7b8cff; color: #0b0f33; }

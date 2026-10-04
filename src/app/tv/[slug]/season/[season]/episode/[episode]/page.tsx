@@ -63,7 +63,7 @@ export default async function EpisodePage({ params }: P) {
         }}
       />
       <Breadcrumbs items={crumbs} />
-      <p className="text-sm text-amber-400">{code(sn, en)}</p>
+      <p className="text-sm text-accent">{code(sn, en)}</p>
       <h1 className="text-3xl font-black tracking-tight">{ep.title}</h1>
       <p className="mt-1 text-zinc-400">
         <Link href={`/tv/${s.slug}`} className="underline">{s.title}</Link>

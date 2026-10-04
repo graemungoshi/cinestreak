@@ -11,8 +11,22 @@ Rule: a source is only used in production if its terms permit it. "Free" does no
 - **Caching:** short-lived in-memory caching only for now. Confirm before storing data in your own database (slice 2).
 - **Images:** hotlinked from TVMaze, not downloaded or re-hosted.
 
+## Wikidata (in use: films and people)
+- **Provides:** film and person facts (dates, runtime, genres, cast and crew links, external IDs), search, filmography (SPARQL).
+- **Docs:** https://www.wikidata.org/wiki/Wikidata:Data_access
+- **Licence:** CC0 (public domain), no attribution required; we credit it anyway.
+- **Limits:** keep request volume low and send a descriptive User-Agent (done). The SPARQL endpoint has query time limits; failures degrade to "temporarily unavailable".
+- **Caveat:** coverage and quality vary by film. Many films have no cast or image on Wikidata.
+
+## Wikipedia (in use: summaries and biographies)
+- **Provides:** short extracts via the REST summary API.
+- **Licence:** CC BY-SA 4.0. Each page shows a "Summary from Wikipedia" credit with a link. ShareAlike may apply to the text.
+
+## Wikimedia Commons (in use: images, where a file exists)
+- **Provides:** free-licence images linked from Wikidata (P18). Hotlinked, not copied. Each image links to its Commons file page, which states its licence and author.
+- **Caveat:** most modern film posters are not on Commons, so many films show a placeholder.
+
 ## Planned
-- **Wikidata** (CC0): movies and people metadata, slice 2.
 - **Streaming availability:** no source selected. UI shows "not available yet". Needs a licensed provider.
 - **Ratings/posters for movies:** no commercial-safe free source identified. TMDB is non-commercial on its free tier.
 

@@ -45,7 +45,7 @@ export default async function SeasonPage({ params }: P) {
       <ol className="mt-6 divide-y divide-white/10">
         {eps.map((e) => (
           <li key={e.id}>
-            <Link href={`/tv/${s.slug}/season/${n}/episode/${e.number}`} className="flex gap-4 py-3 hover:text-amber-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400">
+            <Link href={`/tv/${s.slug}/season/${n}/episode/${e.number}`} className="flex gap-4 py-3 hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent">
               <span className="w-8 shrink-0 text-right text-zinc-500">{e.number}</span>
               <span className="flex-1 font-medium">{e.title}</span>
               <span className="text-sm text-zinc-500">{fmtDate(e.airDate)}</span>
@@ -55,7 +55,7 @@ export default async function SeasonPage({ params }: P) {
       </ol>
       <nav aria-label="Seasons" className="mt-8 flex flex-wrap gap-2">
         {all.map((x) => (
-          <Link key={x} href={`/tv/${s.slug}/season/${x}`} aria-current={x === n ? "page" : undefined} className={`rounded-full px-3 py-1 text-sm ${x === n ? "bg-amber-400 text-zinc-950" : "bg-white/10"}`}>S{x}</Link>
+          <Link key={x} href={`/tv/${s.slug}/season/${x}`} aria-current={x === n ? "page" : undefined} className={`rounded-full px-3 py-1 text-sm ${x === n ? "bg-accent text-zinc-950" : "bg-white/10"}`}>S{x}</Link>
         ))}
       </nav>
     </>

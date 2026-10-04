@@ -54,7 +54,7 @@ export default async function SeriesPage({ params }: P) {
         <div>
           <h1 className="text-3xl font-black tracking-tight">{s.title}</h1>
           <p className="mt-1 text-zinc-400">{meta}</p>
-          {s.rating ? <p className="mt-2 font-semibold text-amber-400">★ {s.rating.toFixed(1)} <span className="text-xs font-normal text-zinc-500">TVMaze rating</span></p> : null}
+          {s.rating ? <p className="mt-2 font-semibold text-accent">★ {s.rating.toFixed(1)} <span className="text-xs font-normal text-zinc-500">TVMaze rating</span></p> : null}
           <div className="mt-3 flex flex-wrap gap-2">
             {s.genres.map((g) => <span key={g} className="rounded-full bg-white/10 px-3 py-1 text-xs">{g}</span>)}
           </div>
@@ -73,7 +73,7 @@ export default async function SeriesPage({ params }: P) {
       {seasons.length ? (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
           {seasons.map((se) => (
-            <Link key={se.number} href={`/tv/${s.slug}/season/${se.number}`} className="rounded-lg bg-white/5 p-4 hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400">
+            <Link key={se.number} href={`/tv/${s.slug}/season/${se.number}`} className="rounded-lg bg-white/5 p-4 hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent">
               <div className="font-bold">Season {se.number}</div>
               <div className="text-xs text-zinc-400">{se.episodeCount} episodes{se.airDate ? ` · ${se.airDate.slice(0, 4)}` : ""}</div>
             </Link>

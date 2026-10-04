@@ -35,3 +35,44 @@ export type Episode = {
   rating?: number;
   stillUrl?: string;
 };
+
+export type Credit = { id: string; name: string; slug: string };
+
+export type MovieSummary = { id: string; slug: string; title: string; year?: number; description?: string };
+
+export type Movie = MovieSummary & {
+  overview: string;
+  overviewUrl?: string;
+  releaseDate?: string;
+  runtime?: number;
+  genres: string[];
+  countries: string[];
+  languages: string[];
+  directors: Credit[];
+  writers: Credit[];
+  composers: Credit[];
+  cast: Credit[];
+  companies: string[];
+  imageUrl?: string;
+  imageCreditUrl?: string;
+  imdbId?: string;
+  wikipediaUrl?: string;
+  sourceName: string;
+  sourceUrl: string;
+};
+
+export type PersonSummary = { id: string; slug: string; name: string; description?: string };
+
+export type Person = PersonSummary & {
+  bio: string;
+  bioUrl?: string;
+  birthDate?: string;
+  birthPlace?: string;
+  deathDate?: string;
+  occupations: string[];
+  imageUrl?: string;
+  imageCreditUrl?: string;
+  imdbId?: string;
+  sourceName: string;
+  sourceUrl: string;
+};

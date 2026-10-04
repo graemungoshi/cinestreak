@@ -16,9 +16,9 @@ export function Poster({ url, title, ratio = "aspect-[2/3]" }: { url?: string; t
 
 export function SeriesCard({ s }: { s: SeriesSummary }) {
   return (
-    <Link href={`/tv/${s.slug}`} className="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 rounded-lg">
+    <Link href={`/tv/${s.slug}`} className="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-lg">
       <Poster url={s.posterUrl} title={s.title} />
-      <div className="mt-2 text-sm font-semibold leading-tight group-hover:text-amber-400">{s.title}</div>
+      <div className="mt-2 text-sm font-semibold leading-tight group-hover:text-accent">{s.title}</div>
       <div className="text-xs text-zinc-400">
         {[s.year, s.network].filter(Boolean).join(" · ")}
         {s.rating ? ` · ★ ${s.rating.toFixed(1)}` : ""}
@@ -37,7 +37,7 @@ export function Breadcrumbs({ items }: { items: { name: string; href: string }[]
             {i === items.length - 1 ? (
               <span aria-current="page" className="text-zinc-200">{it.name}</span>
             ) : (
-              <Link href={it.href} className="hover:text-amber-400">{it.name}</Link>
+              <Link href={it.href} className="hover:text-accent">{it.name}</Link>
             )}
           </li>
         ))}
@@ -68,7 +68,18 @@ export function Unavailable() {
     <div className="mx-auto max-w-xl py-16 text-center">
       <h1 className="text-2xl font-bold">Some information may be temporarily unavailable.</h1>
       <p className="mt-2 text-zinc-400">Please try again in a moment.</p>
-      <Link href="/" className="mt-6 inline-block rounded-full bg-amber-400 px-5 py-2 font-semibold text-zinc-950">Back to home</Link>
+      <Link href="/" className="mt-6 inline-block rounded-full bg-accent px-5 py-2 font-semibold text-zinc-950">Back to home</Link>
     </div>
+  );
+}
+
+export function ResultRow({ href, title, sub }: { href: string; title: string; sub?: string }) {
+  return (
+    <li>
+      <Link href={href} className="block rounded-lg px-3 py-3 hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+        <div className="font-semibold">{title}</div>
+        {sub && <div className="text-sm text-zinc-400">{sub}</div>}
+      </Link>
+    </li>
   );
 }
